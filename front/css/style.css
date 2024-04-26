@@ -148,10 +148,24 @@ body {
     border-radius: 0 10px 10px 10px;
     align-self: flex-start;
 }
+.message--time--self {
+    display: block;
+    margin-top: 5px;
+    font-weight: 700;
+    color: rgb(175, 175, 175);
+    text-align: end;
+}
 
 .message--sender {
     display: block;
     margin-bottom: 15px;
     font-weight: 700;
     color: cadetblue;
+}
+.message--time--other {
+    display: block;
+    margin-top: 5px;
+    font-weight: 700;
+    color: rgb(41, 41, 41);
+    text-align: start;
 }
