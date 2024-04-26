@@ -9,14 +9,7 @@ const chatForm = chat.querySelector(".chat__form")
 const chatInput = chat.querySelector(".chat__input")
 const chatMessages = chat.querySelector(".chat__messages")
 
-const colors = [
-    "cadetblue",
-    "darkgoldenrod",
-    "cornflowerblue",
-    "darkkhaki",
-    "hotpink",
-    "gold"
-]
+const colors = [    "cadetblue",    "darkgoldenrod",    "cornflowerblue",    "darkkhaki",    "hotpink",    "gold",    "mediumaquamarine",    "orchid",    "steelblue",    "tomato",    "salmon",    "dodgerblue",    "limegreen",    "slateblue",    "crimson",    "peru",    "indigo",    "teal",    "olive",    "sienna"];
 
 const user = { id: "", name: "", color: "" }
 
@@ -101,35 +94,6 @@ const processMessage = ({ data }) => {
     scrollScreen()
 }
 
-const sendNotificationLogin = (userName) => {
-    const notificationMessage = `${userName} entrou na sala!`;
-
-    // Cria um novo <span> para a mensagem de login
-    const loginMessageSpan = document.createElement("span");
-    loginMessageSpan.classList.add("message--login--other");
-    loginMessageSpan.textContent = notificationMessage;
-
-    // Adiciona o <span> ao DOM
-    const chatMessages = document.querySelector(".chat__messages");
-    if (chatMessages) {
-        chatMessages.appendChild(loginMessageSpan);
-
-        // Envia a mensagem WebSocket
-        const notification = {
-            messageLogin: notificationMessage
-        };
-        if (websocket && websocket.readyState === WebSocket.OPEN) {
-            websocket.send(JSON.stringify(notification));
-        } else {
-            console.error("Erro ao enviar a mensagem: conexão WebSocket não está pronta.");
-        }
-
-        console.log(notificationMessage);
-    } else {
-        console.error("Elemento .chat__messages não encontrado");
-    }
-};
-
 const handleLogin = (event) => {
     event.preventDefault();
 
@@ -145,8 +109,6 @@ const handleLogin = (event) => {
     websocket = new WebSocket("wss://clone-chat-online.onrender.com");
     websocket.onmessage = processMessage;
 
-    // Chama a função para enviar a mensagem de login
-    sendNotificationLogin(user.name);
 };
 
 
@@ -175,4 +137,5 @@ const sendMessage = (event) => {
 
 loginForm.addEventListener("submit", handleLogin)
 chatForm.addEventListener("submit", sendMessage)
+chatForm.addEventListener("submit", sendNotificationLogin)
 loginForm.addEventListener("submit", handleLogin);

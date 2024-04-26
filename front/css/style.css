@@ -143,8 +143,8 @@ body {
 }
 
 .message--other {
-    background-color: rgba(255, 255, 255, 0.8);
-    color: #333;
+    background-color: rgba(201, 201, 201, 0.8);
+    color: #000000;
     border-radius: 0 10px 10px 10px;
     align-self: flex-start;
 }
