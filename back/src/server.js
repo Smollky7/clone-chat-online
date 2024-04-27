@@ -1,27 +1,42 @@
-const WebSocket = require('ws');
+const { WebSocketServer } = require("ws");
+const dotenv = require("dotenv");
 
-const wss = new WebSocket.Server({ port: 8080 });
+dotenv.config();
+
+const wss = new WebSocketServer({ port: process.env.PORT || 8080 });
 
 wss.on("connection", (ws) => {
-    ws.on("error", console.error);
-
-    // Envia uma notificação quando um usuário entra na sala
-    wss.clients.forEach((client) => {
-        if (client !== ws && client.readyState === WebSocket.OPEN) {
-            client.send("Um novo usuário entrou na sala!");
-        }
+    ws.on("error", (error) => {
+        console.error("Erro na conexão WebSocket:", error);
+        // Encerrar a conexão ou tomar outras medidas apropriadas
     });
 
     ws.on("message", (data) => {
-        // Aqui você pode adicionar lógica para lidar com mensagens recebidas
-        console.log("Mensagem recebida:", data);
-        // Exemplo de como reenviar uma mensagem recebida para todos os clientes
-        wss.clients.forEach((client) => {
-            if (client !== ws && client.readyState === WebSocket.OPEN) {
-                client.send(data);
+        try {
+            const message = JSON.parse(data);
+            if (typeof message === "object") {
+                console.log("Mensagem recebida:", message);
+                if (message.type === "notification") {
+                    // Se for uma mensagem de notificação, enviar para todos os clientes
+                    wss.clients.forEach((client) => {
+                        client.send(JSON.stringify(message));
+                    });
+                } else {
+                    // Se for uma mensagem de membro, enviar para todos exceto o remetente
+                    wss.clients.forEach((client) => {client.send(data.toString())});
+                }
+            } else {
+                console.warn("Mensagem inválida recebida:", data);
             }
-        });
+        } catch (error) {
+            console.error("Erro ao analisar mensagem:", error);
+        }
     });
 
     console.log("Cliente conectado");
+
+    ws.on("close", () => {
+        console.log("Cliente desconectado");
+        // Remova o cliente da lista de clientes
+    });
 });

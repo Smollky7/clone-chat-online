@@ -3,55 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    <!-- Link para a fonte -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0" />
+    <!-- Link para o seu arquivo CSS -->
     <link rel="stylesheet" href="./css/style.css">
-
-    <title>Chat Online </title>
+    <title>Chat Online</title>
 </head>
 <body>
-    
     <section class="container">
-
+        <!-- Seção de login -->
         <section class="login">
             <h2>Login</h2>
+            <!-- Formulário de login -->
             <form class="login__form">
-                <input type="text" class="login__input" placeholder="Seu nome" required autofocus/>
+                <!-- Campo de entrada para o nome do usuário -->
+                <input type="text" class="login__input" placeholder="Seu nome" required autofocus autocomplete="off">
+                <!-- Botão de envio do formulário -->
                 <button type="submit" class="login__button">Entrar</button>
             </form>
         </section>
-
+        <!-- Seção de chat -->
         <section class="chat">
+            <!-- Container para as mensagens do chat -->
             <section class="chat__messages">
-              <!-- <div class="message--self">
-                 <span class="message--time--self"></span>
-              </div>
-                
-                <div class="message--other">
-                    <span class="message--sender"></span>
-                     <span class="message--time--other"></span>
-                </div>
-                    
-            <span class="message--login--other"></span>
-            -->
-            <span class="message--login--other"></span>
-
+                <!-- Mensagens do chat aparecerão aqui -->
             </section>
-
+            <!-- Formulário de envio de mensagem -->
             <form class="chat__form">
-                <input type="text" autofocus class="chat__input" placeholder="Digite uma mensagem" required >
-                <button type="submit" class="chat__button">
+                <!-- Campo de entrada para a mensagem -->
+                <input type="text" autofocus class="chat__input" placeholder="Digite uma mensagem" required>
+                <!-- Botão de envio da mensagem -->
+                <button type="submit" class="chat__button" aria-label="Enviar mensagem">
+                    <!-- Ícone de envio de mensagem -->
                     <span class="material-symbols-outlined">send</span>
                 </button>
             </form>
         </section>
-
     </section>
-
+    <!-- Link para o seu arquivo JavaScript -->
     <script src="./js/script.js"></script>
-    <script>
-        
-    </script>
-    
 </body>
 </html>
