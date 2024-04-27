@@ -126,7 +126,7 @@ const handleLogin = (event) => {
         content: `${user.name} entrou na sala.`
     };
 
-    websocket = new WebSocket("ws://localhost:8080");
+    websocket = new WebSocket("wss://clone-chat-online.onrender.com");
 
     websocket.onopen = () => {
         console.log("Conexão WebSocket estabelecida.");
