@@ -1,5 +1,7 @@
+/* Importando a fonte "Inter" do Google Fonts para ser usada no documento */
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");
 
+/* Resetando margens, preenchimentos e caixas para todos os elementos e definindo a fonte padrão como "Inter" */
 * {
     margin: 0;
     padding: 0;
@@ -7,44 +9,48 @@
     font-family: "Inter", sans-serif;
 }
 
+/* Definindo o tamanho base da fonte como 16 pixels */
 :root {
     font-size: 16px;
 }
 
+/* Estilos gerais do corpo do documento */
 body {
-    background: url("../images/background.jpg");
-    color: #f2f2f2;
+    background: url("../images/background.jpg"); /* Imagem de fundo */
+    color: #f2f2f2; /* Cor do texto */
 }
 
+/* Estilizando o contêiner principal para centralizar seu conteúdo */
 .container {
     width: 100%;
-    height: 100dvh;
+    height: 100dvh; /* Altura igual à altura da janela de visualização */
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
+/*------------ Estilos do formulário de login ------------*/
 .login {
     width: 100%;
     max-width: 330px;
-    background-color: rgba(33, 33, 33, 0.8);
+    background-color: rgba(33, 33, 33, 0.8); /* Cor de fundo do formulário */
     border-radius: 5px;
     padding: 20px;
 }
 
 .login > h2 {
-    text-align: center;
-    font-weight: 600;
-    font-size: 1.5rem;
-    margin-bottom: 20px;
+    text-align: center; /* Alinhamento centralizado para o título */
+    font-weight: 600; /* Peso da fonte */
+    font-size: 1.5rem; /* Tamanho da fonte */
+    margin-bottom: 20px; /* Margem inferior */
 }
 
 .login__form {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 15px; /* Espaçamento entre os elementos do formulário */
 }
-
+ /* Estilos para a entrada de texto do formulário de login */
 .login__input {
     border: none;
     padding: 15px;
@@ -59,7 +65,7 @@ body {
 .login__input:focus {
     outline: 2px solid #f2f2f2;
 }
-
+ /* Estilos para o botão de login */
 .login__button {
     border: none;
     padding: 15px;
@@ -74,7 +80,8 @@ body {
 .login__button:hover {
     background-color: #fff;
 }
-
+/*------------ Estilos do chat ------------*/
+/* Estilos gerais do contêiner do chat */
 .chat {
     width: 100%;
     height: 100%;
@@ -82,7 +89,7 @@ body {
     flex-direction: column;
     justify-content: space-between;
 }
-
+/* Estilos para a área de mensagens do chat */
 .chat__messages {
     flex-grow: 1;
     padding: 30px 30px 90px;
@@ -90,7 +97,7 @@ body {
     flex-direction: column;
     justify-content: flex-end;
 }
-
+/* Estilos para o formulário de envio de mensagens */
 .chat__form {
     background-color: #191919;
     padding: 15px 20px;
@@ -102,7 +109,8 @@ body {
     left: 0;
     width: 100%;
 }
-
+/*------------ Estilos para a entrada de texto do chat ------------*/
+/* Estilos para a entrada de texto do chat */
 .chat__input {
     border: none;
     padding: 15px;
@@ -113,18 +121,22 @@ body {
     color: #f2f2f2;
     font-size: 1rem;
 }
+/*------------ Estilos para o botão de envio de mensagens ------------*/
 
+/* Estilos para o botão de envio de mensagens */
 .chat__button {
     border: none;
     background: none;
     color: #f2f2f2;
     cursor: pointer;
 }
-
 .chat__button > span {
     font-size: 1.8rem;
 }
 
+/*------------ Estilos para as mensagens do chat ------------*/
+
+/* Estilos para cada mensagem */
 .chat__messages > div {
     padding: 10px;
     width: 100%;
@@ -134,7 +146,9 @@ body {
     margin-bottom: 15px;
     line-height: 22px;
 }
+/*------------ Estilos específicos para mensagens enviadas pelo usuário ------------*/
 
+/* Estilos para mensagens enviadas pelo próprio usuário */
 .message--self {
     background-color: rgba(33, 33, 33, 0.8);
     color: #fff;
@@ -142,6 +156,9 @@ body {
     align-self: flex-end;
 }
 
+/*------------ Estilos específicos para mensagens enviadas por outros usuários ------------*/
+
+/* Estilos para mensagens enviadas por outros usuários */
 .message--other {
     background-color: rgba(201, 201, 201, 0.8);
     color: #000000;
@@ -154,18 +171,22 @@ body {
     display: block;
     margin-bottom: 4px;
 }
+/*------------ Estilos para o horário das mensagens ------------*/
+
+/* Estilos para o horário das mensagens do usuário */
 .message--time--self {
     margin-top: 5px;
     font-weight: 700;
     color: rgb(175, 175, 175);
     text-align: end;
 }
-
+/* Estilos para o horário das mensagens do usuário */
 .message--sender {
     margin-bottom: 15px;
     font-weight: 700;
     color: cadetblue;
 }
+/* Estilos para o horário das mensagens de outros usuários */
 .message--time--other {
     display: block;
     margin-top: 5px;
@@ -173,6 +194,7 @@ body {
     color: rgb(41, 41, 41);
     text-align: start;
 }
+/* Estilos para notificações */
 .notification {
     background-color: rgba(0, 0, 0, 0.5);
     border-radius: 10px;
@@ -183,4 +205,19 @@ body {
     font-weight: bold;
     text-align: center;
     border: 1px solid rgba(255, 255, 255, 0.2);
+}
+/* Estilos para o botão de upload de arquivo */
+.chat__file-upload {
+    border: none;
+    background: none;
+    color: #f2f2f2;
+    cursor: pointer;
+}
+.chat__file-upload > span {
+    font-size: 1.8rem;
+}
+
+/* Estilos para ocultar o input de arquivo */
+#file-upload {
+    display: none;
 }
