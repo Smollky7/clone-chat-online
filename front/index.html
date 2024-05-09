@@ -28,22 +28,26 @@
             <section class="chat__messages">
                 <!-- Mensagens do chat aparecerão aqui -->
             </section>
-            <div class="image-preview-container"></div>
-<!-- Formulário de envio de mensagem -->
-<form class="chat__form">
-    <!-- Campo de entrada para a mensagem -->
-    <input type="text" autofocus class="chat__input" placeholder="Digite uma mensagem" required>
-    <!-- Ícone para enviar mensagem -->
-    <label for="file-upload" class="chat__file-upload">
-        <span class="material-symbols-outlined">attach_file</span>
-    </label>
-    <input id="file-upload" type="file" accept="image/jpeg,image/jpg,image/png,image/gif" style="display:none">
-    <!-- Botão de envio da mensagem -->
-    <button type="submit" class="chat__button" aria-label="Enviar mensagem">
-        <!-- Ícone de envio de mensagem -->
-        <span class="material-symbols-outlined">send</span>
-    </button>
-</form>
+           
+            <form class="chat__form">
+                <!-- Container para pré-visualização da imagem -->
+                <div class="chat__input-container"></div>
+                <!-- Campo de entrada para a mensagem -->
+                <input type="text" autofocus class="chat__input" placeholder="Digite uma mensagem" >
+                <!-- Ícone para enviar mensagem -->
+                <label for="file-upload" class="chat__file-upload">
+                    <span class="material-symbols-outlined">attach_file</span>
+                </label>
+                <input id="file-upload" type="file" accept="image/jpeg,image/jpg,image/png,image/gif" style="display:none">
+                <!-- Botão de envio da mensagem -->
+                <button type="submit" class="chat__button" aria-label="Enviar mensagem">
+                    <!-- Ícone de envio de mensagem -->
+                    <span class="material-symbols-outlined">send</span>
+                </button>
+            </form>
+            
+            
+
 
 
         </section>

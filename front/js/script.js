@@ -26,6 +26,7 @@ const createMessageOtherElement = (content, sender, senderColor) => {
     const div = createMessageElement(content, "message--other", sender, senderColor);
     return div;
 };
+
 // Função para criar um elemento de mensagem genérico
 const createMessageElement = (content, messageType, sender = "", senderColor = "") => {
     const div = document.createElement("div");
@@ -94,33 +95,7 @@ const processMessage = ({ data }) => {
     scrollScreen();
 };
 // Função para criar um elemento de mensagem de imagem
-const createImageMessageElement = (content, sender, senderColor) => {
-    const div = document.createElement("div");
 
-    div.classList.add("message", "message--other");
-
-    if (sender !== "") {
-        const spanSender = document.createElement("span");
-        spanSender.textContent = sender;
-        spanSender.style.color = senderColor;
-        div.appendChild(spanSender);
-    }
-
-    const img = document.createElement("img");
-    img.src = content;
-    div.appendChild(img);
-
-    const spanHora = document.createElement("span");
-    const dataHoraAtual = new Date();
-    const hora = dataHoraAtual.getHours();
-    const minutos = dataHoraAtual.getMinutes();
-
-    spanHora.classList.add("message--time", "message--time--other");
-    spanHora.textContent = `${hora}:${minutos}`;
-    div.appendChild(spanHora);
-
-    return div;
-};
 // Função para criar um elemento de notificação
 const createNotificationElement = (content) => {
     const div = document.createElement("div");
@@ -175,57 +150,116 @@ const handleLogin = (event) => {
 const handleFileUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            const img = document.createElement("img");
-            img.src = e.target.result;
-            img.alt = "Preview";
-            // Adicione a imagem ao chat__input
-            chatInput.appendChild(img);
+        // Verifica o tipo do arquivo
+        if (file.type.startsWith('image/')) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const imgPreview = document.createElement("img");
+                imgPreview.src = e.target.result;
+                imgPreview.alt = "Preview";
+                imgPreview.classList.add("image-preview");
+                
+                // Adicione a imagem de pré-visualização dentro da barra chat__input
+                const inputContainer = document.querySelector('.chat__input-container');
+                inputContainer.innerHTML = ''; // Limpa o conteúdo anterior
+                inputContainer.appendChild(imgPreview);
+
+                // Armazena a imagem para ser enviada posteriormente
+                inputContainer.dataset.imageData = e.target.result;
+            }
+            reader.readAsDataURL(file);
+        } else {
+            // Se não for uma imagem, exibe uma mensagem de erro
+            console.error("O arquivo selecionado não é uma imagem.");
         }
-        reader.readAsDataURL(file);
     }
 };
+const createImageMessageElement = (content, sender, senderColor) => {
+    const div = document.createElement("div");
 
-// Função para enviar uma mensagem
+    if (sender === user.name) {
+        div.classList.add("message", "message--self");
+    } else {
+        div.classList.add("message", "message--other");
+    }
+
+    if (sender !== "") {
+        const spanSender = document.createElement("span");
+        spanSender.textContent = sender;
+        spanSender.style.color = senderColor;
+        div.appendChild(spanSender);
+    }
+
+    const img = document.createElement("img");
+    img.src = content;
+    div.appendChild(img);
+
+    const spanHora = document.createElement("span");
+    const dataHoraAtual = new Date();
+    const hora = dataHoraAtual.getHours();
+    const minutos = dataHoraAtual.getMinutes();
+
+    spanHora.classList.add("message--time");
+
+    if (sender === user.name) {
+        spanHora.classList.add("message--time--self");
+    } else {
+        spanHora.classList.add("message--time--other");
+    }
+
+    spanHora.textContent = `${hora}:${minutos}`;
+    div.appendChild(spanHora);
+
+    return div;
+};
 const sendMessage = (event) => {
     event.preventDefault();
 
     const messageContent = chatInput.value.trim();
-    const messageContentIMG = chatInput.querySelector("img");
-    let message;
+    const imageData = document.querySelector('.chat__input-container').dataset.imageData;
 
-    if (messageContentIMG) {
-        // Se houver uma imagem no campo de entrada
-        message = {
+    // Verifica se há conteúdo de mensagem ou imagem
+    if (imageData || messageContent) {
+       
+        const message = {
             userId: user.id,
             userName: user.name,
             userColor: user.color,
-            type: "image",
-            content: messageContentIMG.src
+            image: imageData || null,
+            content: messageContent || null
         };
-    } else {
-        // Se não houver imagem, enviar mensagem de texto
-        if (!messageContent) {
-            alert("Por favor, insira uma mensagem válida.");
-            return;
+
+        // Adiciona a mensagem de imagem ao chat apenas se o campo de texto estiver vazio
+        if (imageData && !messageContent) {
+            const img = document.createElement("img");
+            img.src = imageData;
+            img.alt = "Preview";
+           
+            const imageMessage = createImageMessageElement(img.src, user.name, user.color);
+            chatMessages.appendChild(imageMessage);
+            
+            // Atualiza o valor do campo de entrada para "IMG"
+            chatInput.value = "IMG";
         }
 
-        message = {
-            userId: user.id,
-            userName: user.name,
-            userColor: user.color,
-            content: messageContent
-        };
-    }
-
-    if (websocket && websocket.readyState === WebSocket.OPEN) {
-        websocket.send(JSON.stringify(message));
-        chatInput.innerHTML = "";
+        // Verifica se há uma conexão WebSocket aberta e envia a mensagem
+        (websocket && websocket.readyState === WebSocket.OPEN) ?
+            (websocket.send(JSON.stringify(message)),
+                (chatInput.value = "",
+                    document.querySelector('.chat__input-container').innerHTML = '')) :
+            console.error("Erro ao enviar a mensagem: conexão WebSocket não está pronta.");
     } else {
-        console.error("Erro ao enviar a mensagem: conexão WebSocket não está pronta.");
+        console.log("Nenhuma mensagem significativa para enviar.");
+        // Marca o campo de entrada de texto como requerido se nenhum conteúdo estiver presente
+       
     }
 };
+
+  
+  
+
+
+
 
 // Função para lidar com o envio de imagens
 

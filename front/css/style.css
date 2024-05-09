@@ -221,3 +221,29 @@ body {
 #file-upload {
     display: none;
 }
+.image-preview-container {
+    position: relative;
+    height: 0;
+    overflow: hidden;
+    padding-top: 50px; /* Altura da barra de preview */
+}
+
+.image-preview {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    max-width: 100px; /* Largura máxima do preview */
+    max-height: 50px; /* Altura máxima do preview */
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+}
+/* CSS para as mensagens de imagem */
+.message img {
+    max-width: 200px; /* Defina o tamanho máximo da largura da imagem */
+    max-height: 200px; /* Defina o tamanho máximo da altura da imagem */
+    display: block; /* Para centralizar a imagem */
+    margin: 0 auto; /* Para centralizar a imagem */
+    border-radius: 8px; /* Defina um raio de borda para arredondar as bordas */
+}
