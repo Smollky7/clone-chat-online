@@ -1,3 +1,5 @@
+// Versão 1.0
+
 // Selecionando elementos do DOM relacionados ao login
 const login = document.querySelector(".login");
 const loginForm = login.querySelector(".login__form");
@@ -12,20 +14,19 @@ const chatMessages = chat.querySelector(".chat__messages");
 // Definindo uma lista de cores para os usuários
 const colors = ["cadetblue", "darkgoldenrod", "cornflowerblue", "darkkhaki", "hotpink", "gold", "mediumaquamarine", "orchid", "steelblue", "tomato", "salmon", "dodgerblue", "limegreen", "slateblue", "crimson", "peru", "indigo", "teal", "olive", "sienna"];
 
+// Versão 2.0
+
 // Definindo variáveis para o usuário e a conexão WebSocket
 let user = { id: "", name: "", color: "" };
 let websocket;
 
-// Função para criar um elemento de mensagem enviada pelo próprio usuário
-const createMessageSelfElement = (content) => {
-    const div = createMessageElement(content, "message--self", user.name, user.color);
-    return div;
+// Função para obter uma cor aleatória da lista de cores
+const getRandomColor = () => {
+    const randomIndex = Math.floor(Math.random() * colors.length);
+    return colors[randomIndex];
 };
-// Função para criar um elemento de mensagem enviada por outro usuário
-const createMessageOtherElement = (content, sender, senderColor) => {
-    const div = createMessageElement(content, "message--other", sender, senderColor);
-    return div;
-};
+
+// Versão 3.0
 
 // Função para criar um elemento de mensagem genérico
 const createMessageElement = (content, messageType, sender = "", senderColor = "") => {
@@ -62,18 +63,38 @@ const createMessageElement = (content, messageType, sender = "", senderColor = "
 
     return div;
 };
-// Função para obter uma cor aleatória da lista de cores
-const getRandomColor = () => {
-    const randomIndex = Math.floor(Math.random() * colors.length);
-    return colors[randomIndex];
+
+// Versão 4.0
+
+// Função para criar um elemento de mensagem enviada pelo próprio usuário
+const createMessageSelfElement = (content) => {
+    const div = createMessageElement(content, "message--self", user.name, user.color);
+    return div;
 };
-// Função para rolar a tela para a parte inferior
-const scrollScreen = () => {
-    window.scrollTo({
-        top: document.body.scrollHeight,
-        behavior: "smooth"
-    });
+
+// Função para criar um elemento de mensagem enviada por outro usuário
+const createMessageOtherElement = (content, sender, senderColor) => {
+    const div = createMessageElement(content, "message--other", sender, senderColor);
+    return div;
 };
+
+// Versão 5.0
+
+// Função para criar um elemento de notificação
+const createNotificationElement = (content) => {
+    const div = document.createElement("div");
+    const spanContent = document.createElement("span");
+
+    div.classList.add("notification");
+    spanContent.textContent = content;
+
+    div.appendChild(spanContent);
+
+    return div;
+};
+
+// Versão 6.0
+
 // Função para processar uma mensagem recebida
 const processMessage = ({ data }) => {
     const { userId, userName, userColor, content, type } = JSON.parse(data);
@@ -94,20 +115,18 @@ const processMessage = ({ data }) => {
 
     scrollScreen();
 };
-// Função para criar um elemento de mensagem de imagem
 
-// Função para criar um elemento de notificação
-const createNotificationElement = (content) => {
-    const div = document.createElement("div");
-    const spanContent = document.createElement("span");
+// Versão 7.0
 
-    div.classList.add("notification");
-    spanContent.textContent = content;
-
-    div.appendChild(spanContent);
-
-    return div;
+// Função para rolar a tela para a parte inferior
+const scrollScreen = () => {
+    window.scrollTo({
+        top: document.body.scrollHeight,
+        behavior: "smooth"
+    });
 };
+
+// Versão 8.0
 
 // Função para lidar com o envio do formulário de login
 const handleLogin = (event) => {
@@ -147,6 +166,31 @@ const handleLogin = (event) => {
         console.error("Erro na conexão WebSocket:", error);
     };
 };
+
+// Versão 9.0
+
+// Função para criar o botão de exclusão da imagem
+const createDeleteButton = () => {
+    const deleteButton = document.createElement("button");
+    deleteButton.classList.add("delete-button");
+    deleteButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="#ffffff" stroke-width="2"/><line x1="15" y1="9" x2="9" y2="15" stroke="#ffffff" stroke-width="2"/><line x1="15" y1="15" x2="9" y2="9" stroke="#ffffff" stroke-width="2"/></svg>`;
+
+    deleteButton.addEventListener("click", () => {
+        // Limpa o preview da imagem e os dados da imagem anexada
+        const inputContainer = document.querySelector('.chat__input-container');
+        inputContainer.innerHTML = '';
+        inputContainer.removeAttribute("data-image-data");
+    });
+
+    return deleteButton;
+};
+
+// Versão 10.0
+
+// Variável para armazenar a imagem anexada atualmente
+let currentImage = null;
+
+// Função para lidar com o envio de arquivo quando o usuário seleciona uma imagem
 const handleFileUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -154,18 +198,23 @@ const handleFileUpload = (event) => {
         if (file.type.startsWith('image/')) {
             const reader = new FileReader();
             reader.onload = function(e) {
+                // Cria o preview da imagem
                 const imgPreview = document.createElement("img");
                 imgPreview.src = e.target.result;
                 imgPreview.alt = "Preview";
                 imgPreview.classList.add("image-preview");
-                
-                // Adicione a imagem de pré-visualização dentro da barra chat__input
+
+                // Cria o botão de exclusão da imagem
+                const deleteButton = createDeleteButton();
+
+                // Adiciona a imagem de pré-visualização e o botão de exclusão dentro da barra chat__input
                 const inputContainer = document.querySelector('.chat__input-container');
                 inputContainer.innerHTML = ''; // Limpa o conteúdo anterior
+                inputContainer.appendChild(deleteButton);
                 inputContainer.appendChild(imgPreview);
 
-                // Armazena a imagem para ser enviada posteriormente
-                inputContainer.dataset.imageData = e.target.result;
+                // Armazena a imagem anexada
+                currentImage = e.target.result;
             }
             reader.readAsDataURL(file);
         } else {
@@ -174,6 +223,10 @@ const handleFileUpload = (event) => {
         }
     }
 };
+
+// Versão 11.0
+
+// Função para criar um elemento de mensagem de imagem
 const createImageMessageElement = (content, sender, senderColor) => {
     const div = document.createElement("div");
 
@@ -212,59 +265,59 @@ const createImageMessageElement = (content, sender, senderColor) => {
 
     return div;
 };
+
+// Versão 12.0
+
+// Função para enviar a mensagem quando o usuário clica no botão de enviar
 const sendMessage = (event) => {
     event.preventDefault();
 
     const messageContent = chatInput.value.trim();
-    const imageData = document.querySelector('.chat__input-container').dataset.imageData;
 
-    // Verifica se há conteúdo de mensagem ou imagem
-    if (imageData || messageContent) {
-       
-        const message = {
-            userId: user.id,
-            userName: user.name,
-            userColor: user.color,
-            image: imageData || null,
-            content: messageContent || null
-        };
-
-        // Adiciona a mensagem de imagem ao chat apenas se o campo de texto estiver vazio
-        if (imageData && !messageContent) {
-            const img = document.createElement("img");
-            img.src = imageData;
-            img.alt = "Preview";
-           
-            const imageMessage = createImageMessageElement(img.src, user.name, user.color);
-            chatMessages.appendChild(imageMessage);
+    // Verifica se há uma conexão WebSocket aberta
+    if (websocket && websocket.readyState === WebSocket.OPEN) {
+        // Verifica se há conteúdo de mensagem ou imagem anexada
+        if (messageContent || currentImage) {
+            // Se há conteúdo de mensagem, envia a mensagem de texto
+            if (messageContent) {
+                const message = {
+                    userId: user.id,
+                    userName: user.name,
+                    userColor: user.color,
+                    content: messageContent
+                };
+                websocket.send(JSON.stringify(message));
+            }
             
-            // Atualiza o valor do campo de entrada para "IMG"
-            chatInput.value = "IMG";
+            // Se há uma imagem anexada, envia a mensagem com a imagem
+            if (currentImage) {
+                const message = {
+                    userId: user.id,
+                    userName: user.name,
+                    userColor: user.color,
+                    type: "image",
+                    content: currentImage
+                };
+                websocket.send(JSON.stringify(message));
+            }
+
+            // Limpa o campo de entrada e os dados da imagem após o envio
+            chatInput.value = "";
+            currentImage = null;
+            const inputContainer = document.querySelector('.chat__input-container');
+            inputContainer.innerHTML = '';
+        } else {
+            console.log("Nenhuma mensagem significativa para enviar.");
         }
-
-        // Verifica se há uma conexão WebSocket aberta e envia a mensagem
-        (websocket && websocket.readyState === WebSocket.OPEN) ?
-            (websocket.send(JSON.stringify(message)),
-                (chatInput.value = "",
-                    document.querySelector('.chat__input-container').innerHTML = '')) :
-            console.error("Erro ao enviar a mensagem: conexão WebSocket não está pronta.");
     } else {
-        console.log("Nenhuma mensagem significativa para enviar.");
-        // Marca o campo de entrada de texto como requerido se nenhum conteúdo estiver presente
-       
+        console.error("Erro ao enviar a mensagem: conexão WebSocket não está pronta.");
     }
-};
+};  
 
-  
-  
-
-
-
-
-// Função para lidar com o envio de imagens
-
+// Versão 13.0
 
 // Adicionando ouvintes de eventos para enviar mensagens e lidar com o login
 document.getElementById("file-upload").addEventListener("change", handleFileUpload);
 chatForm.addEventListener("submit", sendMessage);
 loginForm.addEventListener("submit", handleLogin);
+    
