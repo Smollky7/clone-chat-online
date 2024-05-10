@@ -308,3 +308,48 @@ body {
     cursor: pointer;
     z-index: 99999;
 }
+/* Adicione ao seu arquivo CSS */
+
+/* Estilos para o contador de usuários */
+.chat__sidebar {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 200px; /* Ajuste conforme necessário */
+    height: 100%;
+    background-color: #f5f5f5;
+    border-left: 1px solid #ccc;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 10px;
+}
+
+.chat__user-count {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+/* Estilos para o pop-up de usuários */
+.user-popup {
+    position: absolute;
+    top: 30px; /* Posição ajustável */
+    right: -10px; /* Posição ajustável */
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px;
+    display: none; /* Inicialmente oculto */
+    z-index: 999; /* Para ficar por cima do restante */
+}
+.mention-icon-container-self {
+    float: left;
+    margin-top: -10px;
+    margin-right: 5px;
+}
+.mention-icon-container-other {
+    float: right;
+    margin-top: -10px;
+    margin-right: 5px;
+}
+

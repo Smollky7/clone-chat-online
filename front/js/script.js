@@ -26,13 +26,19 @@ const getRandomColor = () => {
     return colors[randomIndex];
 };
 
-// Versão 3.0
+const highlightMentions = (messageContent) => {
+    // Expressão regular para encontrar menções (@usuário)
+    const mentionRegex = /@(\w+)/g;
+    return messageContent.replace(mentionRegex, '@$1');
+};
 
 // Função para criar um elemento de mensagem genérico
 const createMessageElement = (content, messageType, sender = "", senderColor = "") => {
     const div = document.createElement("div");
 
     div.classList.add("message", messageType);
+        // Destaca as menções no conteúdo da mensagem
+        content = highlightMentions(content);
 
     if (sender !== "") {
         const spanSender = document.createElement("span");
@@ -44,6 +50,33 @@ const createMessageElement = (content, messageType, sender = "", senderColor = "
     const spanContent = document.createElement("span");
     spanContent.textContent = content;
     div.appendChild(spanContent);
+    
+    // Adicionando ponto de exclamação vermelho se o usuário foi mencionado e é o usuário atual
+    if (content.includes(`@${user.name}`)) {
+        if (messageType === "message--self") {
+            const iconContainer = document.createElement("span");
+            iconContainer.classList.add("mention-icon-container-self");
+    
+            const exclamIcon = document.createElement("span");
+            exclamIcon.innerHTML = "&#9888;"; // Ponto de exclamação vermelho
+            exclamIcon.style.color = "red";
+            exclamIcon.style.marginRight = "5px"; // Margem para separação
+            exclamIcon.style.marginTop = "-5px"; // Ajuste de posicionamento
+            iconContainer.appendChild(exclamIcon);
+            div.appendChild(iconContainer);
+        } else if (messageType === "message--other") {
+            const iconContainer = document.createElement("span");
+            iconContainer.classList.add("mention-icon-container-other");
+    
+            const exclamIcon = document.createElement("span");
+            exclamIcon.innerHTML = "&#9888;"; // Ponto de exclamação vermelho
+            exclamIcon.style.color = "red";
+            exclamIcon.style.marginRight = "5px"; // Margem para separação
+            exclamIcon.style.marginTop = "-5px"; // Ajuste de posicionamento
+            iconContainer.appendChild(exclamIcon);
+            div.appendChild(iconContainer);
+        }
+    }
 
     const spanHora = document.createElement("span");
     const dataHoraAtual = new Date();
@@ -154,7 +187,7 @@ const handleLogin = (event) => {
         content: `${user.name} entrou na sala`
     };
 
-    websocket = new WebSocket("wss://chat-backend-nsvq.onrender.com");
+    websocket = new WebSocket("ws://localhost:5555");
 
     websocket.onopen = () => {
         console.log("Conexão WebSocket estabelecida.");
@@ -316,6 +349,13 @@ const sendMessage = (event) => {
     event.preventDefault();
 
     const messageContent = chatInput.value.trim();
+        // Verifica se há menções na mensagem
+        const mentions = messageContent.match(/@(\w+)/g);
+        let mentionedUsers = [];
+        if (mentions) {
+            // Extrai os nomes de usuário das menções
+            mentionedUsers = mentions.map(mention => mention.substring(1));
+        }
 
     // Verifica se há uma conexão WebSocket aberta
     if (websocket && websocket.readyState === WebSocket.OPEN) {
