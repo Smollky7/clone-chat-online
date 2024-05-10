@@ -187,7 +187,7 @@ const handleLogin = (event) => {
         content: `${user.name} entrou na sala`
     };
 
-    websocket = new WebSocket("ws://localhost:5555");
+    websocket = new WebSocket("wss://chat-backend-nsvq.onrender.com");
 
     websocket.onopen = () => {
         console.log("Conexão WebSocket estabelecida.");
