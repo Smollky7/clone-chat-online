@@ -154,7 +154,7 @@ const handleLogin = (event) => {
         content: `${user.name} entrou na sala`
     };
 
-    websocket = new WebSocket("wss://clone-chat-online.onrender.com");
+    websocket = new WebSocket("wss://clone-chat-backend.vercel.app/");
 
     websocket.onopen = () => {
         console.log("Conexão WebSocket estabelecida.");
