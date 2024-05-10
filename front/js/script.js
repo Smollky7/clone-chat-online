@@ -154,7 +154,7 @@ const handleLogin = (event) => {
         content: `${user.name} entrou na sala`
     };
 
-    websocket = new WebSocket("wss://vercel.com/smollky7s-projects/chat-backend/CotAXm7PkrUbKqCEHqzXUfTZyYME ");
+    websocket = new WebSocket("wss://chat-backend-2flaf8me5-smollky7s-projects.vercel.app");
 
     websocket.onopen = () => {
         console.log("Conexão WebSocket estabelecida.");
