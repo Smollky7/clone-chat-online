@@ -226,7 +226,6 @@ const handleFileUpload = (event) => {
 
 // Versão 11.0
 
-// Função para criar um elemento de mensagem de imagem
 const createImageMessageElement = (content, sender, senderColor) => {
     const div = document.createElement("div");
 
@@ -245,6 +244,7 @@ const createImageMessageElement = (content, sender, senderColor) => {
 
     const img = document.createElement("img");
     img.src = content;
+    img.classList.add("zoomable-image"); // Adicionando uma classe para identificar imagens clicáveis
     div.appendChild(img);
 
     const spanHora = document.createElement("span");
@@ -263,8 +263,51 @@ const createImageMessageElement = (content, sender, senderColor) => {
     spanHora.textContent = `${hora}:${minutos}`;
     div.appendChild(spanHora);
 
+    // Adicionando o ouvinte de eventos para ampliar a imagem quando clicada
+    img.addEventListener("click", () => {
+        zoomImage(content);
+    });
+
     return div;
 };
+const zoomImage = (imageUrl) => {
+    // Criando um elemento de imagem para a versão ampliada
+    const zoomedImage = document.createElement("img");
+    zoomedImage.src = imageUrl;
+    zoomedImage.classList.add("zoomed-image");
+
+    // Criando um botão de fechar
+    const closeButton = document.createElement("button");
+    closeButton.classList.add("close-button");
+    closeButton.innerHTML = "&times;"; // Adicionando o símbolo 'X'
+
+    // Criando uma camada de fundo escura para destacar a imagem ampliada
+    const overlay = document.createElement("div");
+    overlay.classList.add("overlay");
+    overlay.appendChild(zoomedImage);
+    overlay.appendChild(closeButton);
+
+    // Adicionando a camada de sobreposição ao corpo do documento
+    document.body.appendChild(overlay);
+
+    // Adicionando um ouvinte de eventos para fechar a imagem ampliada quando clicada fora dela
+    overlay.addEventListener("click", (event) => {
+        if (event.target === overlay) {
+            closeZoomedImage(overlay);
+        }
+    });
+
+    // Adicionando um ouvinte de eventos para fechar a imagem ampliada quando o botão de fechar é clicado
+    closeButton.addEventListener("click", () => {
+        closeZoomedImage(overlay);
+    });
+};
+
+// Função para fechar a imagem ampliada
+const closeZoomedImage = (overlay) => {
+    overlay.remove();
+};
+
 
 // Versão 12.0
 
